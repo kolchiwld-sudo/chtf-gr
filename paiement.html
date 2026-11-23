@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
     button.textContent = "Traitement...";
 
     try {
-      const response = await fetch("payment.php", {
+      const response = await fetch("/api/payment.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
