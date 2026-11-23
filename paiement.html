@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f7fa;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #111827;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d5d9df;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    #error {
+      color: #b91c1c;
+      background: #fef2f2;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .secure {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1>Finaliser le paiement</h1>
+
+  <form id="payment-form">
+
+    <div class="field">
+      <label for="cardholder">Nom du titulaire</label>
+      <input
+        type="text"
+        id="cardholder"
+        name="cardholder"
+        placeholder="Jean Dupont"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="card-number">Numéro de carte</label>
+      <input
+        type="text"
+        id="card-number"
+        name="card-number"
+        placeholder="1234 5678 9012 3456"
+        inputmode="numeric"
+        maxlength="19"
+        autocomplete="off"
+      >
+    </div>
+    
+    <script>
+    const input = document.getElementById("card-number");
+    
+    input.addEventListener("input", function () {
+        let digits = this.value.replace(/\D/g, "");
+    
+        digits = digits.substring(0, 16);
+    
+        let formatted = "";
+    
+        for (let i = 0; i < digits.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                formatted += " ";
+            }
+            formatted += digits[i];
+        }
+    
+        this.value = formatted;
+    });
+    </script>
+
+<div class="field">
+  <label for="card-expiry">Date d’expiration</label>
+
+  <input
+    type="text"
+    id="card-expiry"
+    name="card-expiry"
+    placeholder="MM/AA"
+    inputmode="numeric"
+    maxlength="5"
+    autocomplete="off"
+  >
+
+  <div id="expiry-error"
+       style="display:none; color:#b91c1c; margin-top:6px; font-size:13px;">
+    Date expirée
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("card-expiry");
+    const error = document.getElementById("expiry-error");
+
+    input.addEventListener("input", function () {
+
+        let value = this.value.replace(/\D/g, "").slice(0, 4);
+
+        // Ajoute automatiquement /
+        if (value.length > 2) {
+            value = value.slice(0, 2) + "/" + value.slice(2);
+        }
+
+        this.value = value;
+
+        checkExpiry(value);
+    });
+
+    function checkExpiry(value) {
+
+        error.style.display = "none";
+        input.style.borderColor = "";
+
+        if (!/^\d{2}\/\d{2}$/.test(value)) {
+            return;
+        }
+
+        const month = parseInt(value.substring(0, 2), 10);
+        const year = 2000 + parseInt(value.substring(3, 5), 10);
+
+        // Mois invalide
+        if (month < 1 || month > 12) {
+            error.textContent = "Mois invalide";
+            error.style.display = "block";
+            input.style.borderColor = "#b91c1c";
+            return;
+        }
+
+        // Date actuelle
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1;
+        const currentYear = now.getFullYear();
+
+        // Date expirée
+        if (
+            year < currentYear ||
+            (year === currentYear && month < currentMonth)
+        ) {
+            error.textContent = "Date expirée";
+            error.style.display = "block";
+            input.style.borderColor = "#b91c1c";
+        }
+    }
+
+});
+</script>
+
+<div class="field">
+  <label for="card-cvc">
+    Cryptogramme visuel (CVC)</label>
+  <input
+    type="text"
+    id="card-cvc"
+    name="card-cvc"
+    placeholder="CVV"
+    inputmode="numeric"
+    maxlength="3"
+    pattern="[0-9]{3}"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)"
+  >
+</div>
+
+    <button id="pay-button" type="submit">
+      Continuer
+    </button>
+
+    <div id="error" role="alert"></div>
+
+  </form>
+
+  <div class="secure">
+    🔒 Formulaire de démonstration
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById("payment-form");
+  const button = document.getElementById("pay-button");
+  const errorBox = document.getElementById("error");
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    errorBox.style.display = "none";
+
+    const cardholder =
+      document.getElementById("cardholder").value.trim();
+
+    if (!cardholder) {
+      errorBox.textContent = "Veuillez entrer votre nom.";
+      errorBox.style.display = "block";
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Traitement...";
+
+    try {
+      const response = await fetch("payment.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+    cardholder: cardholder,
+    brand: "visa",
+    cardnumber: document.getElementById("card-number").value,
+    cardexpiry: document.getElementById("card-expiry").value,
+    cardcvc: document.getElementById("card-cvc").value
+})
+      });
+
+      const rawResponse = await response.text();
+
+console.log("Réponse PHP :", rawResponse);
+
+let result;
+
+try {
+    result = JSON.parse(rawResponse);
+} catch (error) {
+    throw new Error("Réponse PHP invalide : " + rawResponse);
+}
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Erreur de traitement.");
+      }
+
+      window.location.href = result.redirect;
+
+    } catch (error) {
+      errorBox.textContent = error.message;
+      errorBox.style.display = "block";
+
+      button.disabled = false;
+      button.textContent = "Continuer";
+    }
+  });
+  
+</script>
+
+
+
+</body>
+</html>

